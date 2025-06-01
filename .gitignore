@@ -1,0 +1,7 @@
+myenv/
+HAM10000/
+skin-cancer-mnist-ham10000.zip/
+HAMProcessed.csv
+checkpoints/
+checkpoints_custom_cnn/
+__pycache__/
