@@ -5,3 +5,5 @@ HAMProcessed.csv
 checkpoints/
 checkpoints_custom_cnn/
 __pycache__/
+checkpoints_efficientnet
+checkpoints_resnet

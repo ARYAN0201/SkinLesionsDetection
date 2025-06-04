@@ -44,12 +44,9 @@ class HAMPreprocessor:
 if __name__ == "__main__":
 
     image_dirs = [
-        "/home/Ujjwal/Aryan/HAM10000/ham10000_images_part_1",
-        "/home/Ujjwal/Aryan/HAM10000/HAM10000_images_part_1",
-        "/home/Ujjwal/Aryan/HAM10000/ham10000_images_part_2",
-        "/home/Ujjwal/Aryan/HAM10000/HAM10000_images_part_2"
+        "/Users/aryandahiya/data/HAM10000_images"
     ]
 
-    processor = HAMPreprocessor("/home/Ujjwal/Aryan/HAM10000/HAM10000_metadata.csv", image_dirs)
+    processor = HAMPreprocessor("/Users/aryandahiya/data/HAM10000_metadata.csv", image_dirs)
     df_processed = processor.preprocess()
-    df_processed.to_csv("HAMProcessed.csv", index=False)
+    df_processed.to_csv("HAM10000_processed.csv", index=False)

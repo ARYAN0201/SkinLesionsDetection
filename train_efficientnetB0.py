@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 import torch
-from torchvision.models import resnet50, ResNet50_Weights
+from torchvision.models import efficientnet_b0, EfficientNet_B0_Weights
 
 from modules.preprocessing import HAMPreprocessor
 from modules.augmentor import ImageAugmentor
@@ -11,7 +11,6 @@ from modules.trainer import Trainer
 from sklearn.model_selection import train_test_split
 
 image_dirs = ["/Users/aryandahiya/data/HAM10000_images"]
-
 processor = HAMPreprocessor("/Users/aryandahiya/data/HAM10000_metadata.csv", image_dirs)
 df = processor.preprocess()
 
@@ -29,25 +28,25 @@ target_count = train_df['dx'].value_counts().max()
 balancer = DataBalancer(train_df, target_count)
 balanced_train_df = balancer.balance()
 
-
 augmentor = ImageAugmentor()
 train_loader = get_dataloader(balanced_train_df, label_map, augmentor, batch_size=16)
 val_loader = get_dataloader(val_df, label_map, augmentor = None, batch_size=16)
 test_loader = get_dataloader(test_df, label_map, augmentor=None, batch_size=16)
-print(f"Train batches: {len(train_loader)}, Validation batches: {len(val_loader)}")
 
+print(f"Train batches: {len(train_loader)}, Validation batches: {len(val_loader)}")
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
 print(f"Using device: {device}")
 
-weights = ResNet50_Weights.IMAGENET1K_V1
-model = resnet50(weights=weights)
-
-model.fc = torch.nn.Linear(model.fc.in_features, len(labels))
+weights = EfficientNet_B0_Weights.IMAGENET1K_V1
+model = efficientnet_b0(weights=weights)
+in_features = model.classifier[1].in_features
+model.classifier[1] = torch.nn.Linear(in_features, len(labels))
 model.to(device)
 
 trainer = Trainer(model, device, train_loader, val_loader)
 
-checkpoint_dir = "checkpoints_resnet"
+checkpoint_dir = "checkpoints_efficientnet"
 os.makedirs(checkpoint_dir, exist_ok=True)
 checkpoint_path = None
 start_epoch = 1

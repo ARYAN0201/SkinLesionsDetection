@@ -11,7 +11,6 @@ class DataBalancer:
         return np.mean(pixels), np.var(pixels)
     
     def sample_class(self, class_df, image_arrays):
-        # Sample with replacement to reach target_count
         sampled_df = class_df.sample(n=self.target_count, replace=True, random_state=42)
         return sampled_df
     
